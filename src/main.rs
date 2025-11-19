@@ -9,7 +9,7 @@ use std::path::PathBuf;
 
 fn main() -> Result<()> {
     let args: Vec<String> = env::args().collect();
-    
+
     if args.len() != 3 {
         eprintln!("Usage: {} '<glob-pattern>' '<regex>'", args[0]);
         eprintln!("Example: {} '**/*.rs' 'fn.*main'", args[0]);
@@ -27,7 +27,7 @@ fn main() -> Result<()> {
         .filter(|path| path.is_file())
         .collect();
 
-    // Search files for regex pattern    
+    // Search files for regex pattern
     let re = Regex::new(regex_pattern)
         .with_context(|| format!("Invalid regex pattern: {}", regex_pattern))?;
     let results: Vec<_> = files
@@ -69,4 +69,3 @@ fn search_file(path: &PathBuf, re: &Regex) -> Option<(PathBuf, Vec<(usize, Strin
         Some((path.clone(), matches))
     }
 }
-

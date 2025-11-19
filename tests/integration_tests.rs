@@ -223,7 +223,7 @@ fn test_empty_directory() {
 #[test]
 fn test_multiline_output_format() {
     let temp_dir = create_test_files();
-    
+
     // Create a file with multiple matches
     fs::write(
         temp_dir.path().join("multi.rs"),
@@ -240,7 +240,7 @@ fn test_multiline_output_format() {
         .unwrap();
 
     let stdout = String::from_utf8(output.stdout).unwrap();
-    
+
     // Should show filename once, followed by all matching lines
     assert!(stdout.contains("multi.rs:"));
     assert!(stdout.contains("1:"));
