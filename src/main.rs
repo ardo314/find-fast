@@ -9,10 +9,11 @@ use std::path::PathBuf;
 
 fn main() -> Result<()> {
     let args: Vec<String> = env::args().collect();
-
+    
     if args.len() != 3 {
-        eprintln!("Usage: {} <glob-pattern> <regex>", args[0]);
-        eprintln!("Example: {} **/*.ex fu?n", args[0]);
+        eprintln!("Usage: {} '<glob-pattern>' '<regex>'", args[0]);
+        eprintln!("Example: {} '**/*.rs' 'fn.*main'", args[0]);
+        eprintln!("\nNote: Quote the glob pattern to prevent shell expansion!");
         std::process::exit(1);
     }
 
