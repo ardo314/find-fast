@@ -50,16 +50,16 @@ fn create_test_files() -> TempDir {
 
 #[test]
 fn test_missing_arguments() {
-    let mut cmd = Command::cargo_bin("find-fast").unwrap();
-    cmd.assert()
+    Command::new(assert_cmd::cargo::cargo_bin!("find-fast"))
+        .assert()
         .failure()
         .stderr(predicate::str::contains("Usage:"));
 }
 
 #[test]
 fn test_invalid_glob_pattern() {
-    let mut cmd = Command::cargo_bin("find-fast").unwrap();
-    cmd.arg("[invalid")
+    Command::new(assert_cmd::cargo::cargo_bin!("find-fast"))
+        .arg("[invalid")
         .arg("pattern")
         .assert()
         .failure()
@@ -71,8 +71,8 @@ fn test_invalid_regex_pattern() {
     let temp_dir = create_test_files();
     let glob_pattern = format!("{}/**/*.rs", temp_dir.path().display());
 
-    let mut cmd = Command::cargo_bin("find-fast").unwrap();
-    cmd.arg(glob_pattern)
+    Command::new(assert_cmd::cargo::cargo_bin!("find-fast"))
+        .arg(glob_pattern)
         .arg("[invalid(regex")
         .assert()
         .failure()
@@ -84,8 +84,8 @@ fn test_search_rust_files_for_function() {
     let temp_dir = create_test_files();
     let glob_pattern = format!("{}/**/*.rs", temp_dir.path().display());
 
-    let mut cmd = Command::cargo_bin("find-fast").unwrap();
-    cmd.arg(glob_pattern)
+    Command::new(assert_cmd::cargo::cargo_bin!("find-fast"))
+        .arg(glob_pattern)
         .arg(r"fn\s+\w+")
         .assert()
         .success()
@@ -101,8 +101,8 @@ fn test_search_for_todo_comments() {
     let temp_dir = create_test_files();
     let glob_pattern = format!("{}/**/*", temp_dir.path().display());
 
-    let mut cmd = Command::cargo_bin("find-fast").unwrap();
-    cmd.arg(glob_pattern)
+    Command::new(assert_cmd::cargo::cargo_bin!("find-fast"))
+        .arg(glob_pattern)
         .arg("TODO")
         .assert()
         .success()
@@ -117,8 +117,8 @@ fn test_search_specific_directory() {
     let temp_dir = create_test_files();
     let glob_pattern = format!("{}/src/**/*.rs", temp_dir.path().display());
 
-    let mut cmd = Command::cargo_bin("find-fast").unwrap();
-    cmd.arg(glob_pattern)
+    Command::new(assert_cmd::cargo::cargo_bin!("find-fast"))
+        .arg(glob_pattern)
         .arg(r"fn\s+\w+")
         .assert()
         .success()
@@ -131,8 +131,8 @@ fn test_search_with_no_matches() {
     let temp_dir = create_test_files();
     let glob_pattern = format!("{}/**/*.rs", temp_dir.path().display());
 
-    let mut cmd = Command::cargo_bin("find-fast").unwrap();
-    cmd.arg(glob_pattern)
+    Command::new(assert_cmd::cargo::cargo_bin!("find-fast"))
+        .arg(glob_pattern)
         .arg("THISPATTERNWILLNOTMATCH12345")
         .assert()
         .success()
@@ -145,16 +145,16 @@ fn test_search_case_sensitive() {
     let glob_pattern = format!("{}/**/*", temp_dir.path().display());
 
     // Search for lowercase 'todo' should not match uppercase 'TODO'
-    let mut cmd = Command::cargo_bin("find-fast").unwrap();
-    cmd.arg(&glob_pattern)
+    Command::new(assert_cmd::cargo::cargo_bin!("find-fast"))
+        .arg(&glob_pattern)
         .arg("^todo$")
         .assert()
         .success()
         .stdout(predicate::str::is_empty());
 
     // Search for uppercase 'TODO' should match
-    let mut cmd = Command::cargo_bin("find-fast").unwrap();
-    cmd.arg(&glob_pattern)
+    Command::new(assert_cmd::cargo::cargo_bin!("find-fast"))
+        .arg(&glob_pattern)
         .arg("TODO")
         .assert()
         .success()
@@ -166,8 +166,11 @@ fn test_line_numbers_are_correct() {
     let temp_dir = create_test_files();
     let glob_pattern = format!("{}/src/main.rs", temp_dir.path().display());
 
-    let mut cmd = Command::cargo_bin("find-fast").unwrap();
-    let output = cmd.arg(glob_pattern).arg("fn main").output().unwrap();
+    let output = Command::new(assert_cmd::cargo::cargo_bin!("find-fast"))
+        .arg(glob_pattern)
+        .arg("fn main")
+        .output()
+        .unwrap();
 
     let stdout = String::from_utf8(output.stdout).unwrap();
     // "fn main()" is on line 1
@@ -181,8 +184,8 @@ fn test_complex_regex_patterns() {
     let glob_pattern = format!("{}/**/*.rs", temp_dir.path().display());
 
     // Test regex with groups
-    let mut cmd = Command::cargo_bin("find-fast").unwrap();
-    cmd.arg(&glob_pattern)
+    Command::new(assert_cmd::cargo::cargo_bin!("find-fast"))
+        .arg(&glob_pattern)
         .arg(r"(fn|pub fn)\s+\w+")
         .assert()
         .success()
@@ -195,8 +198,8 @@ fn test_glob_pattern_single_file() {
     let temp_dir = create_test_files();
     let glob_pattern = format!("{}/README.md", temp_dir.path().display());
 
-    let mut cmd = Command::cargo_bin("find-fast").unwrap();
-    cmd.arg(glob_pattern)
+    Command::new(assert_cmd::cargo::cargo_bin!("find-fast"))
+        .arg(glob_pattern)
         .arg("Project")
         .assert()
         .success()
@@ -209,8 +212,8 @@ fn test_empty_directory() {
     let temp_dir = TempDir::new().unwrap();
     let glob_pattern = format!("{}/**/*", temp_dir.path().display());
 
-    let mut cmd = Command::cargo_bin("find-fast").unwrap();
-    cmd.arg(glob_pattern)
+    Command::new(assert_cmd::cargo::cargo_bin!("find-fast"))
+        .arg(glob_pattern)
         .arg("pattern")
         .assert()
         .success()
@@ -230,8 +233,11 @@ fn test_multiline_output_format() {
 
     let glob_pattern = format!("{}/multi.rs", temp_dir.path().display());
 
-    let mut cmd = Command::cargo_bin("find-fast").unwrap();
-    let output = cmd.arg(glob_pattern).arg(r"fn\s+\w+").output().unwrap();
+    let output = Command::new(assert_cmd::cargo::cargo_bin!("find-fast"))
+        .arg(glob_pattern)
+        .arg(r"fn\s+\w+")
+        .output()
+        .unwrap();
 
     let stdout = String::from_utf8(output.stdout).unwrap();
     
