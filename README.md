@@ -45,6 +45,42 @@ cargo build --release
 
 ## Testing
 
+### Integration Tests
+
+Run comprehensive integration tests on the release build:
+
 ```bash
-cargo test
+cargo test --release
+```
+
+The test suite includes:
+
+- Error handling (invalid patterns, missing arguments)
+- Search functionality across different file types
+- Output format verification
+- Glob pattern matching
+- Regex complexity tests
+
+### Performance Benchmarks
+
+Run performance benchmarks to measure search speed:
+
+```bash
+cargo bench --bench search_benchmark
+```
+
+Benchmarks measure:
+
+- Small vs large file performance
+- Regex complexity impact
+- Parallel processing efficiency
+- Match density effects
+- Throughput metrics
+
+Results are saved in `target/criterion/` with detailed HTML reports.
+
+See [TESTING.md](TESTING.md) for detailed testing documentation.
+
+```
+
 ```
