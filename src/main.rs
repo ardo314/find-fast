@@ -9,7 +9,7 @@ use std::path::PathBuf;
 
 fn main() -> Result<()> {
     let args: Vec<String> = env::args().collect();
-    println!("{:?}", args);
+    
     if args.len() != 3 {
         eprintln!("Usage: {} '<glob-pattern>' '<regex>'", args[0]);
         eprintln!("Example: {} '**/*.rs' 'fn.*main'", args[0]);
