@@ -81,6 +81,11 @@ Results are saved in `target/criterion/` with detailed HTML reports.
 
 See [TESTING.md](TESTING.md) for detailed testing documentation.
 
-```
+## Related Implementations
 
-```
+This is part of a group of implementations. Specification can be found in the Elixir repository by pherklotz.
+
+Other implementations of this in other languages can be found here:
+
+- [Haskell provided by mgrosser3](https://github.com/mgrosser3/findfast/)
+- [Elixir provided by pherklotz](https://github.com/pherklotz/find-fast-elixir/)
